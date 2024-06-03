@@ -3,31 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Original and Detection Image</title>
-    <style>
-        .image-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 20px;
-        }
-
-        .image-container img {
-            max-width: 50%; 
-        }
-    </style>
+    <title>Prediction Results</title>
 </head>
 <body>
-    <h1>Original and Detection Images</h1>
-    <div class="image-container">
-        <div class="original-image">
-            <h2>Original Image</h2>
-            <img src="data:image/png;base64,{{ original_img_data }}" alt="Original Image">
-        </div>
-        <div class="grayscale-image">
-            <h2>Detection Image</h2>
-            <img src="data:image/png;base64,{{ detection_img_data }}" alt="Detection Image">
-        </div>
-    </div>
+    <h1>Prediction Results</h1>
+    <ul>
+        {% for class_name, confidence in predictions %}
+            <li>Class: {{ class_name }}, Confidence: {{ confidence }}</li>
+        {% endfor %}
+    </ul>
 </body>
 </html>
