@@ -2,14 +2,17 @@ from flask import Flask, render_template, request
 import numpy as np
 import cv2
 import os
-
 from ultralytics import YOLO
+
+# Load your YOLO model
 model = YOLO('best (1).pt')
 
+# Allowed file extensions
 extensions = {'png', 'jpg', 'jpeg', 'gif'}
 
 app = Flask(__name__)
 
+# Mapping class IDs to class names
 class_map = {
     0: 'Amstel Malt Bottle',
     1: 'Amstel Malt Can',
@@ -51,6 +54,5 @@ def home():
 
     return render_template('index.html')
 
-if __name__ == '__main__':
-    os.environ.setdefault('FLASK_ENV', 'development')
-    app.run(debug=False, port=5000, host='0.0.0.0')
+if __name__ == "__main__":
+    app.run()
