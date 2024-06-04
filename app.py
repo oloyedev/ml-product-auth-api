@@ -4,7 +4,7 @@ import cv2
 import os
 
 from ultralytics import YOLO
-model = YOLO('best.pt')
+model = YOLO('best (1).pt')
 
 extensions = {'png', 'jpg', 'jpeg', 'gif'}
 
