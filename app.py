@@ -51,7 +51,7 @@ def predict():
     if file.filename == '':
         return render_template('index.html', error='No selected file')
 
-    if file and allowed_file(file.filename):
+    if file.filename:
         predictions = predict_on_image(file.stream)
         return render_template('result.html', predictions=predictions)
 
