@@ -37,22 +37,9 @@ def predict_on_image(image_stream):
 
     return predictions
 
-@app.route('/', methods=['GET', 'POST'])
-def home():
-    if request.method == 'POST':
-        if 'file' not in request.files:
-            return render_template('index.html', error='No file part')
-
-        file = request.files['file']
-
-        if file.filename == '':
-            return render_template('index.html', error='No selected file')
-
-        if file and allowed_file(file.filename):
-            predictions = predict_on_image(file.stream)
-            return render_template('result.html', predictions=predictions)
-
+@app.route('/')
+def index():
     return render_template('index.html')
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
