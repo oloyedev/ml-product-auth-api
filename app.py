@@ -2,17 +2,14 @@ from flask import Flask, render_template, request
 import numpy as np
 import cv2
 import os
+
 from ultralytics import YOLO
+model = YOLO('best (1).pt')
+
+extensions = {'png', 'jpg', 'jpeg', 'gif'}
 
 app = Flask(__name__)
 
-# Load your YOLO model
-model = YOLO('best (1).pt')
-
-# Allowed file extensions
-extensions = {'png', 'jpg', 'jpeg', 'gif'}
-
-# Mapping class IDs to class names
 class_map = {
     0: 'Amstel Malt Bottle',
     1: 'Amstel Malt Can',
@@ -45,17 +42,14 @@ def home():
 
         file = request.files['file']
 
-        if not file.filename:
+        if file.filename == '':
             return render_template('index.html', error='No selected file')
 
-        if file and allowed_file(file.filename) and file.read(1):  # Check if the file is not empty
-            file.seek(0)  # Reset the file pointer to the beginning of the file
+        if file and allowed_file(file.filename):
             predictions = predict_on_image(file.stream)
             return render_template('result.html', predictions=predictions)
-        else:
-            return render_template('index.html', error='Empty file or invalid file format')
 
     return render_template('index.html')
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()
