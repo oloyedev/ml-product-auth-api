@@ -40,6 +40,22 @@ def predict_on_image(image_stream):
 @app.route('/')
 def index():
     return render_template('index.html')
+    
+@app.route('/predict', methods=['POST'])
+def predict():
+    if 'file' not in request.files:
+        return render_template('index.html', error='No file part')
+
+    file = request.files['file']
+
+    if file.filename == '':
+        return render_template('index.html', error='No selected file')
+
+    if file and allowed_file(file.filename):
+        predictions = predict_on_image(file.stream)
+        return render_template('result.html', predictions=predictions)
+
+    return render_template('index.html', error='Invalid file format')
 
 if __name__ == "__main__":
     app.run(debug=True)
