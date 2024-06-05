@@ -4,13 +4,13 @@ import cv2
 import os
 from ultralytics import YOLO
 
+app = Flask(__name__)
+
 # Load your YOLO model
 model = YOLO('best (1).pt')
 
 # Allowed file extensions
 extensions = {'png', 'jpg', 'jpeg', 'gif'}
-
-app = Flask(__name__)
 
 # Mapping class IDs to class names
 class_map = {
@@ -37,25 +37,25 @@ def predict_on_image(image_stream):
 
     return predictions
 
-@app.route('/')
-def index():
+@app.route('/', methods=['GET', 'POST'])
+def home():
+    if request.method == 'POST':
+        if 'file' not in request.files:
+            return render_template('index.html', error='No file part')
+
+        file = request.files['file']
+
+        if not file.filename:
+            return render_template('index.html', error='No selected file')
+
+        if file and allowed_file(file.filename) and file.read(1):  # Check if the file is not empty
+            file.seek(0)  # Reset the file pointer to the beginning of the file
+            predictions = predict_on_image(file.stream)
+            return render_template('result.html', predictions=predictions)
+        else:
+            return render_template('index.html', error='Empty file or invalid file format')
+
     return render_template('index.html')
-    
-@app.route('/predict', methods=['POST'])
-def predict():
-    if 'file' not in request.files:
-        return render_template('index.html', error='No file part')
-
-    file = request.files['file']
-
-    if file.filename == '':
-        return render_template('index.html', error='No selected file')
-
-    if file.filename and file.read(1):
-        predictions = predict_on_image(file.stream)
-        return render_template('result.html', predictions=predictions)
-
-    return render_template('index.html', error='Invalid file format')
 
 if __name__ == "__main__":
     app.run(debug=True)
