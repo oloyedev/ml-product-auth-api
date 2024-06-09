@@ -2,15 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prediction Results</title>
+    <title>Detection Result</title>
 </head>
 <body>
-    <h1>Prediction Results</h1>
+    <h1>Detection Result</h1>
+    <h2>Original Image:</h2>
+    <img src="{{ url_for('display_image', image_data=image_data) }}" alt="Uploaded Image" style="max-width: 500px;">
+    <h2>Predictions:</h2>
     <ul>
         {% for class_name, confidence in predictions %}
-            <li>Class: {{ class_name }}, Confidence: {{ confidence }}</li>
+        <li>{{ class_name }}: {{ confidence * 100 | round(2) }}{% if confidence > 0 %}%{% endif %}</li>
         {% endfor %}
     </ul>
+    <a href="{{ url_for('home') }}">Upload another image</a>
 </body>
 </html>
