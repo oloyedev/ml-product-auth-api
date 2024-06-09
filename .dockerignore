@@ -2,8 +2,12 @@
 *.pyo
 *.pyd
 __pycache__
-*.git
+.git
 .gitignore
 .DS_Store
 .vscode/
 .idea/
+node_modules/
+tests/
+docs/
+*.md
