@@ -2,17 +2,33 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Upload Image for Prediction</title>
+    <title>Object Detection</title>
+    <script>
+        function previewFile() {
+            const preview = document.getElementById('preview');
+            const file = document.querySelector('input[type=file]').files[0];
+            const reader = new FileReader();
+
+            reader.addEventListener("load", function () {
+                // Convert image file to base64 string and display it
+                preview.src = reader.result;
+            }, false);
+
+            if (file) {
+                reader.readAsDataURL(file);
+            }
+        }
+    </script>
 </head>
 <body>
-    <h1>Uploads Image for Prediction</h1>
-    <form action="/" method="post" enctype="multipart/form-data">
-        <input type="file" name="file">
-        <input type="submit" value="Upload">
+    <h1>Upload an Image for Object Detection</h1>
+    <form method="POST" enctype="multipart/form-data">
+        <input type="file" name="file" onchange="previewFile()">
+        <img id="preview" src="" alt="Image preview" style="max-width: 500px; display: block; margin-top: 10px;">
+        <button type="submit">Predict</button>
     </form>
     {% if error %}
-        <p style="color: red;">{{ error }}</p>
+    <p style="color: red;">{{ error }}</p>
     {% endif %}
 </body>
 </html>
